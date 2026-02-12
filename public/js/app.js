@@ -12,7 +12,7 @@ let allFields = [];
  */
 async function loadFields() {
   try {
-    const res = await fetch(`http://localhost:3000/all-fields/${DATABASE}`);
+    const res = await fetch(`/all-fields/${DATABASE}`);
     const json = await res.json();
     if (json.error) {
       console.error('Error loading fields:', json.error);
@@ -442,7 +442,7 @@ function updateQueryPreview() {
     console.log("Fetching preview with body:", requestBody);
 
     try {
-      const res = await fetch("http://localhost:3000/query", {
+      const res = await fetch("/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
@@ -555,7 +555,7 @@ async function run() {
 
     const requestBody = generateQueryJSON();
 
-    const res = await fetch("http://localhost:3000/query", {
+    const res = await fetch("/query", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
@@ -614,7 +614,7 @@ function saveQueryConfig() {
     return;
   }
 
-  fetch("http://localhost:3000/save-query-config", {
+  fetch("/save-query-config", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -645,7 +645,7 @@ function saveQueryConfig() {
  * Global function to load a saved config (called from dynamic HTML)
  */
 window.loadSavedConfig = function (configName) {
-  fetch("http://localhost:3000/query-configs")
+  fetch("/query-configs")
     .then(response => response.json())
     .then(data => {
       const config = data.configs.find(c => c.name === configName);
@@ -729,7 +729,7 @@ window.loadSavedConfig = function (configName) {
 window.deleteSavedConfig = function (configId) {
   if (!confirm("Are you sure you want to delete this?")) return;
 
-  fetch(`http://localhost:3000/query-config/${configId}`, { method: "DELETE" })
+  fetch(`/query-config/${configId}`, { method: "DELETE" })
     .then(r => r.json())
     .then(data => {
       if (data.success) {
@@ -746,7 +746,7 @@ window.deleteSavedConfig = function (configId) {
  * Load list of saved configurations
  */
 function loadSavedConfigsList() {
-  fetch("http://localhost:3000/query-configs")
+  fetch("/query-configs")
     .then(res => res.json())
     .then(data => {
       const configs = data.configs || [];
